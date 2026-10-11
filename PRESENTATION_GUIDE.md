@@ -20,20 +20,17 @@ Presentation: **13 Oct 2569, 09:00** (2 points). Report deadline: **12 Oct 2569,
 
 ## 2. Workflow from start to finish
 
-1. **Outline**: approve it in the Canva outline widget (done in chat).
-2. **Generate**: Canva builds a 17-slide deck in navy, teal and amber.
-3. **Insert the real diagrams** from `slide-assets/` (Canva → Uploads → drag the files in):
-   - Slide 6 → `workflow-sequence.png`
-   - Slide 8 → `erd.png`
-   - Slide 9 → `normalization.jpeg`
-   - Slide 10 → `data-dictionary.png`
-4. **Paste the code blocks** (section 3 below) into slides 11 and 13-16. Use a monospace font such as *JetBrains Mono* or *Courier Prime* at 14-16 pt on a dark rounded rectangle.
-5. **Add screenshots of the results.** Run `sql/car_rental.sql` in pgAdmin or the Supabase SQL editor and screenshot each result grid. Real output is stronger evidence than typed numbers.
-6. **Polish**: one idea per slide, keep text under about 40 words, give each slide the same title position, and use the *Fade* or *Match & Move* transition.
-7. **Rehearse** with Canva *Present → Presenter view* and aim for about 10 minutes.
-8. **Back up**: export a PDF and a PPTX in case the projector has no internet. Bring the share link too.
+The deck is already built: `presentation/Online_Car_Rental_System.pptx` (18 slides, with a PDF backup alongside it).
+Every diagram is drawn natively, so it stays sharp and editable: ERD, 5-step workflow, normalization, data dictionary, business-rule table and the M2 result chart.
 
-## 3. Code to paste (copy exactly; every query has been tested on PostgreSQL 16)
+1. **Import into Canva (free):** Canva home → **Create** → **Import file** → choose the `.pptx`. Fonts are Kanit (headings) and Sarabun (body), which Canva provides, so Thai text keeps its look.
+2. **Check every slide** after import and fix any text that shifted.
+3. **Optional:** add screenshots of the real results from pgAdmin or Supabase next to the result tables on slides 13–16.
+4. **Rehearse** with Canva *Present → Presenter view*. Thai speaker notes are already on every slide. Aim for about 10 minutes.
+5. **Back up:** bring the PDF in case the projector has no internet.
+6. **Regenerate the deck** if needed: `presentation/build_deck.js` (pptxgenjs).
+
+## 3. SQL used on the slides (already in the deck; every query has been tested on PostgreSQL 16)
 
 **Slide 11: DDL**
 ```sql
