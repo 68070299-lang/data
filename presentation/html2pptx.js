@@ -53,7 +53,7 @@ const hex = c => { const m = c.match(/rgba?\((\d+),\s*(\d+),\s*(\d+)(?:,\s*([\d.
                 let txt = n.textContent; const pc = getComputedStyle(n.parentElement);
                 if (!/pre|nowrap/.test(pc.whiteSpace) || pc.whiteSpace === 'nowrap') txt = txt.replace(/[ \t\n\r]+/g, ' ');
                 if (!txt) continue;
-                runs.push({ text: txt, color: pc.color, bold: parseInt(pc.fontWeight) >= 600, italic: pc.fontStyle === 'italic', size: parseFloat(pc.fontSize), font: pc.fontFamily.split(',')[0].replace(/['"]/g, '').trim(), ls: parseFloat(pc.letterSpacing) || 0 });
+                runs.push({ text: txt, color: pc.color, w: parseInt(pc.fontWeight), italic: pc.fontStyle === 'italic', size: parseFloat(pc.fontSize), font: pc.fontFamily.split(',')[0].replace(/['"]/g, '').trim(), ls: parseFloat(pc.letterSpacing) || 0 });
               } else if (n.tagName === 'BR') runs.push({ br: true });
               else if (n.nodeType === 1) addRuns(n);
             }
@@ -111,8 +111,10 @@ const hex = c => { const m = c.match(/rgba?\((\d+),\s*(\d+),\s*(\d+)(?:,\s*([\d.
       if (it.t === 'text') {
         const runs = []; for (const r of it.runs) {
           if (r.br) { if (runs.length) runs[runs.length - 1].options.breakLine = true; else runs.push({ text: '', options: { breakLine: true } }); continue; }
-          const font = /Mono/.test(r.font) ? 'IBM Plex Mono' : 'IBM Plex Sans Thai';
-          runs.push({ text: r.text.replace(/ /g, ' '), options: { color: hex(r.color) || '000000', bold: r.bold, italic: r.italic, fontSize: r.size * 0.5, fontFace: font, charSpacing: r.ls ? r.ls * 0.5 : undefined } });
+          const mono = /Mono/.test(r.font);
+          let font = mono ? 'IBM Plex Mono' : 'IBM Plex Sans Thai', bold = r.w >= 650;
+          if (mono) bold = r.w >= 600; else if (!bold && r.w >= 500) font = 'IBM Plex Sans Thai Medium';
+          runs.push({ text: r.text.replace(/ /g, ' '), options: { color: hex(r.color) || '000000', bold, italic: r.italic, fontSize: r.size * 0.5, fontFace: font, charSpacing: r.ls ? r.ls * 0.5 : undefined } });
         }
         if (!runs.length) continue;
         if (it.bullet) runs[0].text = '• ' + runs[0].text;
