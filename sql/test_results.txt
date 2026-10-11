@@ -1,0 +1,126 @@
+DROP TABLE
+psql:sql/car_rental.sql:10: NOTICE:  extension "btree_gist" already exists, skipping
+CREATE EXTENSION
+CREATE TABLE
+CREATE TABLE
+CREATE TABLE
+CREATE TABLE
+CREATE TABLE
+CREATE TABLE
+CREATE INDEX
+CREATE INDEX
+CREATE INDEX
+INSERT 0 4
+INSERT 0 8
+INSERT 0 6
+INSERT 0 8
+INSERT 0 6
+INSERT 0 12
+ car_id | brand  |   model    | daily_rate 
+--------+--------+------------+------------
+      7 | Nissan | Almera     |     900.00
+      8 | Toyota | Yaris Ativ |     950.00
+      1 | Toyota | Camry      |    1800.00
+      3 | Toyota | Fortuner   |    2500.00
+      5 | Toyota | Commuter   |    3000.00
+(5 rows)
+
+ customer_id |    name    |    phone     |       email        | license_no 
+-------------+------------+--------------+--------------------+------------
+           3 | ธนากร มั่นคง | 083-333-3333 | thanakorn@mail.com | DL-10003
+(1 row)
+
+ brand  |   model    | daily_rate 
+--------+------------+------------
+ Toyota | Camry      |    1800.00
+ Honda  | Civic      |    1500.00
+ Toyota | Yaris Ativ |     950.00
+ Nissan | Almera     |     900.00
+(4 rows)
+
+INSERT 0 1
+UPDATE 1
+DELETE 1
+ booking_id |     name      |        car        | start_date |  end_date  |  status   
+------------+---------------+-------------------+------------+------------+-----------
+          1 | สมชาย ใจดี     | Toyota Camry      | 2026-08-05 | 2026-08-08 | Completed
+          2 | สมหญิง รักษ์ดี    | Toyota Fortuner   | 2026-08-10 | 2026-08-14 | Completed
+          3 | สมชาย ใจดี     | Nissan Almera     | 2026-08-20 | 2026-08-22 | Completed
+          4 | ธนากร มั่นคง    | Toyota Commuter   | 2026-08-25 | 2026-08-28 | Completed
+          5 | พิมพ์ชนก สุขใจ   | Honda Civic       | 2026-10-08 | 2026-10-15 | Confirmed
+          6 | วีรภัทร ศรีสุข    | Honda CR-V        | 2026-10-09 | 2026-10-12 | Confirmed
+          8 | กมลชนก แสงทอง | Toyota Yaris Ativ | 2026-10-18 | 2026-10-19 | Cancelled
+          7 | สมหญิง รักษ์ดี    | Toyota Camry      | 2026-10-20 | 2026-10-23 | Pending
+(8 rows)
+
+ type_name | cars | avg_rate 
+-----------+------+----------
+ Van       |    2 |  2900.00
+ SUV       |    2 |  2400.00
+ Sedan     |    2 |  1650.00
+ Eco Car   |    2 |   925.00
+(4 rows)
+
+ payment_method | txns |  total   
+----------------+------+----------
+ Credit Card    |    4 | 15900.00
+ Cash           |    3 |  9500.00
+ QR             |    4 |  3800.00
+(3 rows)
+
+    name    | bookings 
+------------+----------
+ สมชาย ใจดี  |        2
+ สมหญิง รักษ์ดี |        2
+(2 rows)
+
+ license_plate | model |    name     |  due_date  
+---------------+-------+-------------+------------
+ กค 5678       | Civic | พิมพ์ชนก สุขใจ | 2026-10-15
+ ขข 3456       | CR-V  | วีรภัทร ศรีสุข  | 2026-10-12
+(2 rows)
+
+ rental_id |    name     | total_amount |  paid   | outstanding 
+-----------+-------------+--------------+---------+-------------
+         5 | พิมพ์ชนก สุขใจ |     10500.00 | 1000.00 |     9500.00
+         6 | วีรภัทร ศรีสุข  |      6900.00 | 1500.00 |     5400.00
+(2 rows)
+
+       car       | revenue  | rank 
+-----------------+----------+------
+ Honda Civic     | 10500.00 |    1
+ Toyota Fortuner | 10000.00 |    2
+ Toyota Commuter |  9000.00 |    3
+ Honda CR-V      |  6900.00 |    4
+ Toyota Camry    |  5400.00 |    5
+ Nissan Almera   |  1800.00 |    6
+(6 rows)
+
+ car_id |  brand  |   model    | daily_rate 
+--------+---------+------------+------------
+      2 | Honda   | Civic      |    1500.00
+      3 | Toyota  | Fortuner   |    2500.00
+      4 | Honda   | CR-V       |    2300.00
+      5 | Toyota  | Commuter   |    3000.00
+      7 | Nissan  | Almera     |     900.00
+      8 | Toyota  | Yaris Ativ |     950.00
+      6 | Hyundai | H-1        |    2800.00
+(7 rows)
+
+    name    |  spent   
+------------+----------
+ สมหญิง รักษ์ดี | 10500.00
+ ธนากร มั่นคง |  9000.00
+ สมชาย ใจดี  |  7200.00
+(3 rows)
+
+BEGIN
+UPDATE 1
+INSERT 0 1
+UPDATE 1
+UPDATE 1
+COMMIT
+psql:sql/car_rental.sql:226: ERROR:  conflicting key value violates exclusion constraint "no_overlap"
+DETAIL:  Key (car_id, tsrange(start_date, end_date))=(1, ["2026-10-21 10:00:00","2026-10-24 10:00:00")) conflicts with existing key (car_id, tsrange(start_date, end_date))=(1, ["2026-10-20 10:00:00","2026-10-23 10:00:00")).
+psql:sql/car_rental.sql:229: ERROR:  new row for relation "booking" violates check constraint "chk_booking_dates"
+DETAIL:  Failing row contains (10, 3, 3, 2026-10-11 14:38:35.767954, 2026-11-05 00:00:00, 2026-11-01 00:00:00, 0.00, Pending).
