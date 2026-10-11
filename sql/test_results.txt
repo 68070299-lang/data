@@ -1,5 +1,4 @@
 DROP TABLE
-psql:sql/car_rental.sql:10: NOTICE:  extension "btree_gist" already exists, skipping
 CREATE EXTENSION
 CREATE TABLE
 CREATE TABLE
@@ -70,14 +69,21 @@ DELETE 1
 
     name    | bookings 
 ------------+----------
- สมชาย ใจดี  |        2
  สมหญิง รักษ์ดี |        2
+ สมชาย ใจดี  |        2
 (2 rows)
 
  license_plate | model |    name     |  due_date  
 ---------------+-------+-------------+------------
  กค 5678       | Civic | พิมพ์ชนก สุขใจ | 2026-10-15
  ขข 3456       | CR-V  | วีรภัทร ศรีสุข  | 2026-10-12
+(2 rows)
+
+CREATE VIEW
+ license_plate | model |    name     |  due_date  
+---------------+-------+-------------+------------
+ ขข 3456       | CR-V  | วีรภัทร ศรีสุข  | 2026-10-12
+ กค 5678       | Civic | พิมพ์ชนก สุขใจ | 2026-10-15
 (2 rows)
 
  rental_id |    name     | total_amount |  paid   | outstanding 
@@ -120,7 +126,7 @@ INSERT 0 1
 UPDATE 1
 UPDATE 1
 COMMIT
-psql:sql/car_rental.sql:226: ERROR:  conflicting key value violates exclusion constraint "no_overlap"
+psql:sql/car_rental.sql:235: ERROR:  conflicting key value violates exclusion constraint "no_overlap"
 DETAIL:  Key (car_id, tsrange(start_date, end_date))=(1, ["2026-10-21 10:00:00","2026-10-24 10:00:00")) conflicts with existing key (car_id, tsrange(start_date, end_date))=(1, ["2026-10-20 10:00:00","2026-10-23 10:00:00")).
-psql:sql/car_rental.sql:229: ERROR:  new row for relation "booking" violates check constraint "chk_booking_dates"
-DETAIL:  Failing row contains (10, 3, 3, 2026-10-11 14:38:35.767954, 2026-11-05 00:00:00, 2026-11-01 00:00:00, 0.00, Pending).
+psql:sql/car_rental.sql:238: ERROR:  new row for relation "booking" violates check constraint "chk_booking_dates"
+DETAIL:  Failing row contains (10, 3, 3, 2026-10-11 15:16:28.42503, 2026-11-05 00:00:00, 2026-11-01 00:00:00, 0.00, Pending).

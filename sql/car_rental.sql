@@ -172,13 +172,21 @@ FROM payment WHERE status = 'Paid' GROUP BY payment_method ORDER BY total DESC;
 -- M4 ลูกค้าที่จองมากกว่า 1 ครั้ง
 SELECT c.name, COUNT(*) AS bookings
 FROM customer c JOIN booking b ON b.customer_id = c.customer_id
-GROUP BY c.name HAVING COUNT(*) > 1;
+GROUP BY c.customer_id, c.name HAVING COUNT(*) > 1;
 -- M5 รถที่กำลังถูกเช่าอยู่ และกำหนดคืน
 SELECT ca.license_plate, ca.model, cu.name, b.end_date::date AS due_date
 FROM rental r JOIN booking b  ON b.booking_id  = r.booking_id
               JOIN car ca     ON ca.car_id      = b.car_id
               JOIN customer cu ON cu.customer_id = b.customer_id
 WHERE r.status = 'Active';
+-- M6 ทดสอบ DDL: สร้าง View รถที่กำลังถูกเช่า แล้วเรียกใช้
+CREATE VIEW v_active_rentals AS
+SELECT ca.license_plate, ca.model, cu.name, b.end_date::date AS due_date
+FROM rental r JOIN booking b  ON b.booking_id  = r.booking_id
+              JOIN car ca     ON ca.car_id      = b.car_id
+              JOIN customer cu ON cu.customer_id = b.customer_id
+WHERE r.status = 'Active';
+SELECT * FROM v_active_rentals ORDER BY due_date;
 
 -- ===== COMPLEX (subquery / CTE / window function / transaction / constraint test)
 -- C1 ยอดค้างชำระของแต่ละการเช่า (CTE)
@@ -209,9 +217,10 @@ WHERE ca.status <> 'Maintenance'
 SELECT cu.name, SUM(p.amount) AS spent
 FROM customer cu JOIN booking b ON b.customer_id = cu.customer_id
                  JOIN payment p ON p.booking_id  = b.booking_id AND p.status = 'Paid'
-GROUP BY cu.name
-HAVING SUM(p.amount) > (SELECT AVG(s) FROM (SELECT SUM(amount) s FROM payment
-                         WHERE status='Paid' GROUP BY booking_id) x)
+GROUP BY cu.customer_id, cu.name
+HAVING SUM(p.amount) > (SELECT AVG(s) FROM (SELECT SUM(p2.amount) s
+                         FROM payment p2 JOIN booking b2 ON b2.booking_id = p2.booking_id
+                         WHERE p2.status = 'Paid' GROUP BY b2.customer_id) x)
 ORDER BY spent DESC;
 -- C5 ทำรายการคืนรถทั้งกระบวนการใน TRANSACTION (ขั้นตอนที่ 5)
 BEGIN;

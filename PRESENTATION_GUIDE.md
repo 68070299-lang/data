@@ -4,35 +4,38 @@ Presentation: **13 Oct 2569, 09:00** (2 points). Report deadline: **12 Oct 2569,
 
 ## 1. How the deck maps to the rubric
 
+Slide numbers refer to the 19-slide Claude Slides deck (https://claude.ai/artifact/4o5MJH76DLEPCygBXk2s7t).
+
 | Rubric item (8-point report / 2-point presentation) | Slide(s) |
 |---|---|
-| 1) บทนำ ที่มาของปัญหา ความสำคัญ | 2, 3, 4 |
-| 2) ทฤษฎีที่เกี่ยวข้อง | 8, 9, 10 (ERD, Normalization, Data Dictionary) |
-| 3) การออกแบบฐานข้อมูลจากความต้องการผู้ใช้ | 4, 6, 7, 8 |
-| **การเลือกใช้ซอฟต์แวร์ที่เหมาะสม** | 5 |
-| **ขั้นตอนการสร้างฐานข้อมูล (SQL-DDL)** | 11 |
-| **ตัวอย่างข้อมูลที่เหมาะสม** | 12 |
-| **ทดสอบ SQL DDL/DML ง่าย / กลาง / ซับซ้อน, 5-10 คำสั่งต่อระดับ** | 13 (6 easy), 14 (5 medium), 15 + 16 (7 complex) |
-| 5) สรุปและประเมินผล | 17 |
+| 1) บทนำ ที่มาของปัญหา ความสำคัญ | 2, 3 |
+| 2) ทฤษฎีที่เกี่ยวข้อง | 4 (ERD, Normalization, Data Dictionary) |
+| 3) การออกแบบฐานข้อมูลจากความต้องการผู้ใช้ | 5, 7, 8, 9, 10, 11 |
+| **การเลือกใช้ซอฟต์แวร์ที่เหมาะสม** | 6 |
+| **ขั้นตอนการสร้างฐานข้อมูล (SQL-DDL)** | 12 |
+| **ตัวอย่างข้อมูลที่เหมาะสม** | 13 |
+| **ทดสอบ SQL DDL/DML ง่าย / กลาง / ซับซ้อน, 5-10 คำสั่งต่อระดับ** | 14 (6 easy), 15 (6 medium, M6 is the DDL test `CREATE VIEW`), 16 + 17 (7 complex) |
+| 5) สรุปและประเมินผล | 18 |
 
 > **The report has gaps.** Chapters 4 (การสร้างฐานข้อมูลและการทดสอบ) and 5 (สรุป) are missing, and so is all of the SQL the rubric scores.
 > `sql/car_rental.sql` fills them. Paste it into Chapter 4, together with screenshots of the results from `sql/test_results.txt`.
 
 ## 2. Workflow from start to finish
 
-The deck is already built: `presentation/Online_Car_Rental_System.pptx` (18 slides, with a PDF backup alongside it).
+The main deck is the Claude Slides artifact above (19 slides, IBM Plex Sans Thai). Export it with **Share → Export → Send to Canva**, or download PPTX/PDF.
+`presentation/Online_Car_Rental_System.pptx` is an earlier 18-slide version (Kanit/Sarabun) and does not include the review fixes; use it only as a fallback.
 Every diagram is drawn natively, so it stays sharp and editable: ERD, 5-step workflow, normalization, data dictionary, business-rule table and the M2 result chart.
 
-1. **Import into Canva (free):** Canva home → **Create** → **Import file** → choose the `.pptx`. Fonts are Kanit (headings) and Sarabun (body), which Canva provides, so Thai text keeps its look.
+1. **Send to Canva** from the artifact, or import the downloaded `.pptx` via Canva home → **Create** → **Import file**.
 2. **Check every slide** after import and fix any text that shifted.
-3. **Optional:** add screenshots of the real results from pgAdmin or Supabase next to the result tables on slides 13–16.
+3. **Optional:** add screenshots of the real results from psql or Supabase next to the result tables on slides 14–17.
 4. **Rehearse** with Canva *Present → Presenter view*. Thai speaker notes are already on every slide. Aim for about 10 minutes.
 5. **Back up:** bring the PDF in case the projector has no internet.
 6. **Regenerate the deck** if needed: `presentation/build_deck.js` (pptxgenjs).
 
-## 3. SQL used on the slides (already in the deck; every query has been tested on PostgreSQL 16)
+## 3. SQL used on the slides (every query has been tested on PostgreSQL 16 with psql)
 
-**Slide 11: DDL**
+**Slide 12: DDL**
 ```sql
 CREATE TABLE booking (
   booking_id     SERIAL PRIMARY KEY,
@@ -43,38 +46,50 @@ CREATE TABLE booking (
   deposit_amount DECIMAL(10,2) DEFAULT 0 CHECK (deposit_amount >= 0),
   status VARCHAR(20) DEFAULT 'Pending'
     CHECK (status IN ('Pending','Confirmed','Cancelled','Completed')),
-  CHECK (end_date > start_date),                          -- BR7
-  EXCLUDE USING gist (car_id WITH =,
-    tsrange(start_date, end_date) WITH &&)                -- BR2
+  CONSTRAINT chk_booking_dates CHECK (end_date > start_date),   -- BR7
+  CONSTRAINT no_overlap EXCLUDE USING gist (car_id WITH =,
+    tsrange(start_date, end_date) WITH &&)                       -- BR2
     WHERE (status <> 'Cancelled')
 );
 ```
 
-**Slide 13: Easy**
+**Slide 14: Easy**
 ```sql
 SELECT brand, model, daily_rate FROM car
 WHERE status = 'Available' ORDER BY daily_rate;          -- 5 rows
 UPDATE car SET status = 'Available' WHERE license_plate = 'นค 1122';
 ```
 
-**Slide 14: Medium**
+**Slide 15: Medium**
 ```sql
 SELECT t.type_name, COUNT(c.car_id) AS cars, ROUND(AVG(c.daily_rate),2) AS avg_rate
 FROM car_type t LEFT JOIN car c ON c.car_type_id = t.car_type_id
 GROUP BY t.type_name ORDER BY avg_rate DESC;
 -- Van 2900 | SUV 2400 | Sedan 1650 | Eco Car 925
+
+-- M6: DDL test
+CREATE VIEW v_active_rentals AS
+SELECT ca.license_plate, ca.model, cu.name, b.end_date::date AS due_date
+FROM rental r JOIN booking b ON b.booking_id = r.booking_id
+  JOIN car ca ON ca.car_id = b.car_id
+  JOIN customer cu ON cu.customer_id = b.customer_id
+WHERE r.status = 'Active';
+SELECT * FROM v_active_rentals ORDER BY due_date;   -- 2 rows
 ```
 
-**Slide 15: Complex**
+**Slide 16: Complex**
 ```sql
 WITH paid AS (SELECT booking_id, SUM(amount) paid
               FROM payment WHERE status='Paid' GROUP BY booking_id)
-SELECT r.rental_id, r.total_amount - COALESCE(p.paid,0) AS outstanding
-FROM rental r LEFT JOIN paid p USING (booking_id)
+SELECT r.rental_id, cu.name, r.total_amount,
+       r.total_amount - COALESCE(p.paid,0) AS outstanding
+FROM rental r JOIN booking b USING (booking_id)
+  JOIN customer cu USING (customer_id)
+  LEFT JOIN paid p USING (booking_id)
 WHERE r.total_amount - COALESCE(p.paid,0) > 0;  -- 9500, 5400 (run before C5)
 ```
 
-**Slide 16: Constraint test**
+**Slide 17: Constraint test**
 ```sql
 INSERT INTO booking (customer_id, car_id, start_date, end_date)
 VALUES (3, 1, '2026-10-21 10:00', '2026-10-24 10:00');
@@ -85,15 +100,18 @@ VALUES (3, 1, '2026-10-21 10:00', '2026-10-24 10:00');
 
 | Speaker | Slides | Focus |
 |---|---|---|
-| สิทธิพันธุ์ | 1-4 | Problem, objectives, requirements |
-| จิราธิวัชร | 5-7 | Software choice, workflow, business rules |
-| ภรัมพรหม | 8-12 | ERD, normalization, data dictionary, DDL, sample data |
-| พูนพิพัฒน์ | 13-18 | Live SQL tests, constraint demo, conclusion, Q&A |
+| สิทธิพันธุ์ | 1-5 | Problem, objectives, theory, requirements |
+| จิราธิวัชร | 6-8 | Software choice, workflow, business rules |
+| ภรัมพรหม | 9-13 | ERD, normalization, data dictionary, DDL, sample data |
+| พูนพิพัฒน์ | 14-19 | Live SQL tests, constraint demo, conclusion, Q&A |
 
-**Strongest moment:** on slide 16, run the overlapping booking live and let the error appear. It shows the database enforcing BR2 by itself.
+**Strongest moment:** on slide 17, run the overlapping booking live and let the error appear. It shows the database enforcing BR2 by itself.
 
 ## 5. Likely questions
 
 - *Why are BOOKING and RENTAL separate tables?* A booking is the intent and can be cancelled. A rental is the actual pickup and return. Splitting them keeps 0..1 rentals per booking and lets deposits be paid before pickup.
-- *How is BR6 (rent only Available cars) enforced?* The availability query (C3) filters on status and date overlap. The EXCLUDE constraint is the hard guarantee against double booking.
+- *How is BR6 (rent only Available cars) enforced?* At application level: E1 lists only cars with status `Available`. It is not a database constraint yet (listed as a limitation). The EXCLUDE constraint is the hard guarantee against double booking.
+- *Is 2NF really needed here?* Every table has a single-column primary key, so there is no partial dependency. The real split happens at 3NF: BookingID → CustomerID → Name and CarID → CarTypeID → TypeName are transitive dependencies. Note that the report's normalization figure calls the first one "partial"; fix that in the report too.
+- *Why does PAYMENT store both booking_id and rental_id?* A deposit is paid before pickup, when no rental exists yet, so rental_id is nullable. It is a deliberate trade-off.
+- *What does "30 constraints" count?* PK 6, FK 6, UNIQUE 5, CHECK 12, EXCLUDE 1. NOT NULL is not counted.
 - *Why PostgreSQL rather than MySQL?* MySQL has no `EXCLUDE` constraint, so preventing overlapping bookings would need triggers.
