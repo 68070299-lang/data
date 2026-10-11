@@ -74,7 +74,7 @@ WITH paid AS (SELECT booking_id, SUM(amount) paid
               FROM payment WHERE status='Paid' GROUP BY booking_id)
 SELECT r.rental_id, r.total_amount - COALESCE(p.paid,0) AS outstanding
 FROM rental r LEFT JOIN paid p USING (booking_id)
-WHERE r.total_amount - COALESCE(p.paid,0) > 0;           -- 9500, 5400
+WHERE r.total_amount - COALESCE(p.paid,0) > 0;  -- 9500, 5400 (run before C5)
 ```
 
 **Slide 16: Constraint test**
