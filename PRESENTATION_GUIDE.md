@@ -4,7 +4,7 @@ Presentation: **13 Oct 2569, 09:00** (2 points). Report deadline: **12 Oct 2569,
 
 ## 1. How the deck maps to the rubric
 
-Slide numbers refer to the 25-slide Claude Slides deck (https://claude.ai/artifact/4o5MJH76DLEPCygBXk2s7t).
+Slide numbers refer to the 31-slide Claude Slides deck (https://claude.ai/artifact/4o5MJH76DLEPCygBXk2s7t).
 
 | Rubric item (8-point report / 2-point presentation) | Slide(s) |
 |---|---|
@@ -12,30 +12,30 @@ Slide numbers refer to the 25-slide Claude Slides deck (https://claude.ai/artifa
 | 2) ทฤษฎีที่เกี่ยวข้อง | 4 (ERD, Normalization, Data Dictionary) |
 | 3) การออกแบบฐานข้อมูลจากความต้องการผู้ใช้ | 5, 7–9 (workflow and sequence diagram), 10 (business rules), 11 (ERD), 12–14 (1NF, 2NF, 3NF), 15–17 (data dictionary, all 6 tables) |
 | **การเลือกใช้ซอฟต์แวร์ที่เหมาะสม** | 6 |
-| **ขั้นตอนการสร้างฐานข้อมูล (SQL-DDL)** | 18 |
-| **ตัวอย่างข้อมูลที่เหมาะสม** | 19 |
-| **ทดสอบ SQL DDL/DML ง่าย / กลาง / ซับซ้อน, 5-10 คำสั่งต่อระดับ** | 20 (6 easy), 21 (6 medium, M6 is the DDL test `CREATE VIEW`), 22 + 23 (7 complex) |
-| 5) สรุปและประเมินผล | 24 |
+| **ขั้นตอนการสร้างฐานข้อมูล (SQL-DDL)** | 18 (6-step build process), 19 (DDL and constraint breakdown) |
+| **ตัวอย่างข้อมูลที่เหมาะสม** | 20 |
+| **ทดสอบ SQL DDL/DML ง่าย / กลาง / ซับซ้อน, 5-10 คำสั่งต่อระดับ** | 21 (6 easy, all SQL shown), 22–24 (6 medium, M6 is the DDL test `CREATE VIEW`), 25–28 (7 complex, C6–C7 constraint tests on 28) |
+| 5) สรุปและประเมินผล | 29 (results vs objectives), 30 (limitations and future work) |
 
 > **The report has gaps.** Chapters 4 (การสร้างฐานข้อมูลและการทดสอบ) and 5 (สรุป) are missing, and so is all of the SQL the rubric scores.
 > `sql/car_rental.sql` fills them. Paste it into Chapter 4, together with screenshots of the results from `sql/test_results.txt`.
 
 ## 2. Workflow from start to finish
 
-The main deck is the Claude Slides artifact above (25 slides, IBM Plex Sans Thai). Export it with **Share → Export → Send to Canva**, or download PPTX/PDF.
+The main deck is the Claude Slides artifact above (31 slides, IBM Plex Sans Thai). Export it with **Share → Export → Send to Canva**, or download PPTX/PDF.
 `presentation/Online_Car_Rental_System.pptx` is an earlier 18-slide version (Kanit/Sarabun) and does not include the review fixes; use it only as a fallback.
 Every diagram is drawn natively, so it stays sharp and editable: ERD, 5-step workflow, normalization, data dictionary, business-rule table and the M2 result chart.
 
 1. **Send to Canva** from the artifact, or import the downloaded `.pptx` via Canva home → **Create** → **Import file**.
 2. **Check every slide** after import and fix any text that shifted.
-3. **Optional:** add screenshots of the real results from psql or Supabase next to the result tables on slides 20–23.
-4. **Rehearse** with Canva *Present → Presenter view*. Thai speaker notes are already on every slide. Aim for about 10 minutes.
+3. **Optional:** add screenshots of the real results from psql or Supabase next to the result tables on slides 21–28.
+4. **Rehearse** with Canva *Present → Presenter view*. Thai speaker notes are already on every slide. Aim for about 10–12 minutes; move quickly through slides 15–17 and 22–27.
 5. **Back up:** bring the PDF in case the projector has no internet.
 6. **Regenerate the deck** if needed: `presentation/build_deck.js` (pptxgenjs).
 
 ## 3. SQL used on the slides (every query has been tested on PostgreSQL 16 with psql)
 
-**Slide 18: DDL**
+**Slide 19: DDL**
 ```sql
 CREATE TABLE booking (
   booking_id     SERIAL PRIMARY KEY,
@@ -53,14 +53,14 @@ CREATE TABLE booking (
 );
 ```
 
-**Slide 20: Easy**
+**Slide 21: Easy**
 ```sql
 SELECT brand, model, daily_rate FROM car
 WHERE status = 'Available' ORDER BY daily_rate;          -- 5 rows
 UPDATE car SET status = 'Available' WHERE license_plate = 'นค 1122';
 ```
 
-**Slide 21: Medium**
+**Slides 22–24: Medium**
 ```sql
 SELECT t.type_name, COUNT(c.car_id) AS cars, ROUND(AVG(c.daily_rate),2) AS avg_rate
 FROM car_type t LEFT JOIN car c ON c.car_type_id = t.car_type_id
@@ -77,7 +77,7 @@ WHERE r.status = 'Active';
 SELECT * FROM v_active_rentals ORDER BY due_date;   -- 2 rows
 ```
 
-**Slide 22: Complex**
+**Slide 25: Complex**
 ```sql
 WITH paid AS (SELECT booking_id, SUM(amount) paid
               FROM payment WHERE status='Paid' GROUP BY booking_id)
@@ -89,7 +89,7 @@ FROM rental r JOIN booking b USING (booking_id)
 WHERE r.total_amount - COALESCE(p.paid,0) > 0;  -- 9500, 5400 (run before C5)
 ```
 
-**Slide 23: Constraint test**
+**Slide 28: Constraint test**
 ```sql
 INSERT INTO booking (customer_id, car_id, start_date, end_date)
 VALUES (3, 1, '2026-10-21 10:00', '2026-10-24 10:00');
@@ -102,10 +102,10 @@ VALUES (3, 1, '2026-10-21 10:00', '2026-10-24 10:00');
 |---|---|---|
 | สิทธิพันธุ์ | 1-6 | Problem, objectives, theory, requirements, software |
 | จิราธิวัชร | 7-11 | Workflow, sequence diagram, business rules, ERD |
-| ภรัมพรหม | 12-19 | Normalization, data dictionary, DDL, sample data |
-| พูนพิพัฒน์ | 20-25 | Live SQL tests, constraint demo, conclusion, Q&A |
+| ภรัมพรหม | 12-20 | Normalization, data dictionary, build process, DDL, sample data |
+| พูนพิพัฒน์ | 21-31 | Live SQL tests, constraint demo, conclusion, Q&A |
 
-**Strongest moment:** on slide 23, run the overlapping booking live and let the error appear. It shows the database enforcing BR2 by itself.
+**Strongest moment:** on slide 28, run the overlapping booking live and let the error appear. It shows the database enforcing BR2 by itself.
 
 ## 5. Likely questions
 
