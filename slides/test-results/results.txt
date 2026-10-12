@@ -1,0 +1,202 @@
+# Output of test_queries.sql on car_rental_mock_data.sql (MariaDB 10.11, utf8mb4)
+
+===== 4.4.1
+CustomerID	Name	Phone	Email	LicenseNo
+1	สมชาย ใจดี	082-137-1271	somchai.j@hotmail.com	64048271
+2	สมหญิง รักไทย	083-174-1542	somying.r@outlook.com	64096542
+3	ธนากร ศรีสุข	081-211-1813	thanakorn.s@yahoo.com	64144813
+4	พิมพ์ชนก วงศ์ทอง	082-248-2084	pimchanok.w@gmail.com	64193084
+5	กิตติพงษ์ แสงอรุณ	083-285-2355	kittipong.s@hotmail.com	64241355
+6	ณัฐธิดา บุญมา	081-322-2626	nattida.b@outlook.com	64289626
+7	วีรยุทธ ทองคำ	082-359-2897	weerayut.t@yahoo.com	64337897
+8	ปิยะนุช มีสุข	083-396-3168	piyanuch.m@gmail.com	64386168
+9	อนุชา พรหมมา	081-433-3439	anucha.p@hotmail.com	64434439
+10	กมลวรรณ ศักดิ์ดี	082-470-3710	kamonwan.s@outlook.com	64482710
+11	ชยพล อินทร์แก้ว	083-507-3981	chayapol.i@yahoo.com	64530981
+12	ศิริพร จันทร์เพ็ญ	081-544-4252	siriporn.j@gmail.com	64579252
+13	ภานุวัฒน์ สุวรรณ	082-581-4523	panuwat.s@hotmail.com	64627523
+14	รัตนา เกษมสันต์	083-618-4794	rattana.k@outlook.com	64675794
+15	ธีรวัฒน์ ชัยมงคล	081-655-5065	teerawat.c@yahoo.com	64724065
+16	อรอุมา ปัญญาดี	082-692-5336	onuma.p@gmail.com	64772336
+17	ณัฐพล เจริญผล	083-729-5607	nattapon.j@hotmail.com	64820607
+18	สุภาวดี ทิพย์รัตน์	081-766-5878	supawadee.t@outlook.com	64868878
+19	จิรายุ ประเสริฐ	082-803-6149	jirayu.p@yahoo.com	64917149
+20	วรรณภา นาคสวัสดิ์	083-840-6420	wannapa.n@gmail.com	64965420
+
+===== 4.4.2
+CarID	Brand	Model	LicensePlate	DailyRate
+11	BMW	X5	8ซฌ 9999 กรุงเทพมหานคร	6500.00
+10	Mercedes-Benz	E300e	7ชซ 1111 กรุงเทพมหานคร	5500.00
+15	Ford	Mustang	3ตถ 7777 กรุงเทพมหานคร	5000.00
+16	MINI	Cooper Convertible	4ถท 3030 กรุงเทพมหานคร	4000.00
+18	Volvo	V60	5ทธ 6060 กรุงเทพมหานคร	3000.00
+9	Toyota	Commuter	30-4521 กรุงเทพมหานคร	2800.00
+17	Hyundai	H-1	40-8812 กรุงเทพมหานคร	2500.00
+20	Suzuki	Jimny	7บป 8080 กรุงเทพมหานคร	2300.00
+5	Toyota	Fortuner	5ฆฉ 7890 กรุงเทพมหานคร	2200.00
+8	Toyota	Innova Zenix	6งช 8642 กรุงเทพมหานคร	2000.00
+
+===== 4.4.3
+CarID	Brand	Model	Color	DailyRate
+2	Honda	City	เทา	1100.00
+4	Toyota	Yaris Cross	น้ำเงิน	1400.00
+5	Toyota	Fortuner	ดำ	2200.00
+6	Isuzu	D-Max Spark	ขาว	1000.00
+8	Toyota	Innova Zenix	เงิน	2000.00
+9	Toyota	Commuter	ขาว	2800.00
+10	Mercedes-Benz	E300e	ดำ	5500.00
+11	BMW	X5	เทา	6500.00
+12	BYD	Atto 3	น้ำเงิน	1600.00
+13	Honda	Civic e:HEV	ขาว	1700.00
+16	MINI	Cooper Convertible	เขียว	4000.00
+17	Hyundai	H-1	เงิน	2500.00
+18	Volvo	V60	น้ำตาล	3000.00
+19	Wuling	Air EV	ชมพู	800.00
+
+===== 4.4.4
+rented_cars
+4
+
+===== 4.4.5
+BookingID	CustomerID	CarID	StartDate	EndDate	Status
+17	12	20	2026-10-07 09:00:00	2026-10-13 09:00:00	In Progress
+18	15	7	2026-10-08 09:00:00	2026-10-13 09:00:00	In Progress
+19	18	14	2026-10-09 09:00:00	2026-10-13 09:00:00	In Progress
+20	1	1	2026-10-10 09:00:00	2026-10-13 09:00:00	In Progress
+
+===== 4.5.1
+BookingID	customer_name	Phone	Brand	Model	LicensePlate	StartDate	EndDate	Status
+1	พิมพ์ชนก วงศ์ทอง	082-248-2084	Toyota	Innova Zenix	6งช 8642 กรุงเทพมหานคร	2026-08-04 09:00:00	2026-08-10 09:00:00	Completed
+2	วีรยุทธ ทองคำ	082-359-2897	Ford	Mustang	3ตถ 7777 กรุงเทพมหานคร	2026-08-07 09:00:00	2026-08-12 09:00:00	Completed
+3	กมลวรรณ ศักดิ์ดี	082-470-3710	Honda	City	2กค 5678 กรุงเทพมหานคร	2026-08-10 09:00:00	2026-08-14 09:00:00	Completed
+4	ภานุวัฒน์ สุวรรณ	082-581-4523	Toyota	Commuter	30-4521 กรุงเทพมหานคร	2026-08-13 09:00:00	2026-08-16 09:00:00	Completed
+5	อรอุมา ปัญญาดี	082-692-5336	MINI	Cooper Convertible	4ถท 3030 กรุงเทพมหานคร	2026-08-16 09:00:00	2026-08-18 09:00:00	Completed
+6	จิรายุ ประเสริฐ	082-803-6149	Honda	City Hatchback	3ขง 9012 กรุงเทพมหานคร	2026-08-19 09:00:00	2026-08-20 09:00:00	Completed
+7	สมหญิง รักไทย	083-174-1542	Mercedes-Benz	E300e	7ชซ 1111 กรุงเทพมหานคร	2026-08-22 09:00:00	2026-08-28 09:00:00	Completed
+8	กิตติพงษ์ แสงอรุณ	083-285-2355	Hyundai	H-1	40-8812 กรุงเทพมหานคร	2026-08-25 09:00:00	2026-08-30 09:00:00	Completed
+9	ปิยะนุช มีสุข	083-396-3168	Toyota	Yaris Cross	4คจ 3456 กรุงเทพมหานคร	2026-08-28 09:00:00	2026-09-01 09:00:00	Completed
+10	ชยพล อินทร์แก้ว	083-507-3981	BMW	X5	8ซฌ 9999 กรุงเทพมหานคร	2026-08-31 09:00:00	2026-09-03 09:00:00	Completed
+11	รัตนา เกษมสันต์	083-618-4794	Volvo	V60	5ทธ 6060 กรุงเทพมหานคร	2026-09-03 09:00:00	2026-09-05 09:00:00	Completed
+12	ณัฐพล เจริญผล	083-729-5607	Toyota	Fortuner	5ฆฉ 7890 กรุงเทพมหานคร	2026-09-06 09:00:00	2026-09-07 09:00:00	Completed
+13	วรรณภา นาคสวัสดิ์	083-840-6420	BYD	Atto 3	9ญฐ 2024 กรุงเทพมหานคร	2026-09-09 09:00:00	2026-09-15 09:00:00	Completed
+14	ธนากร ศรีสุข	081-211-1813	Wuling	Air EV	6นบ 4242 กรุงเทพมหานคร	2026-09-12 09:00:00	2026-09-17 09:00:00	Completed
+15	ณัฐธิดา บุญมา	081-322-2626	Isuzu	D-Max Spark	ผบ 2468 กรุงเทพมหานคร	2026-09-15 09:00:00	2026-09-19 09:00:00	Completed
+16	อนุชา พรหมมา	081-433-3439	Honda	Civic e:HEV	1ฐด 7531 กรุงเทพมหานคร	2026-09-18 09:00:00	2026-09-21 09:00:00	Completed
+17	ศิริพร จันทร์เพ็ญ	081-544-4252	Suzuki	Jimny	7บป 8080 กรุงเทพมหานคร	2026-10-07 09:00:00	2026-10-13 09:00:00	In Progress
+18	ธีรวัฒน์ ชัยมงคล	081-655-5065	Ford	Ranger Wildtrak	1ฒท 1357 กรุงเทพมหานคร	2026-10-08 09:00:00	2026-10-13 09:00:00	In Progress
+19	สุภาวดี ทิพย์รัตน์	081-766-5878	Mazda	CX-30	2ดต 1590 กรุงเทพมหานคร	2026-10-09 09:00:00	2026-10-13 09:00:00	In Progress
+20	สมชาย ใจดี	082-137-1271	Toyota	Yaris Ativ	1กข 1234 กรุงเทพมหานคร	2026-10-10 09:00:00	2026-10-13 09:00:00	In Progress
+
+===== 4.5.2
+PaymentMethod	payment_count	total_amount
+Cash	5	53400.00
+Bank Transfer	5	52600.00
+PromptPay	5	38200.00
+Credit Card	4	27900.00
+
+===== 4.5.3
+TypeName	rental_count	total_revenue
+Luxury Sedan	1	33000.00
+Coupe	1	25000.00
+Luxury SUV	1	19500.00
+Off-road 4x4	1	13800.00
+Minibus	1	12500.00
+MPV	1	12000.00
+Van	1	11200.00
+EV	1	9600.00
+Pickup Double Cab	1	9000.00
+Wagon	1	9000.00
+Convertible	1	8000.00
+Crossover	1	6000.00
+Compact SUV	1	5600.00
+Hybrid	1	5100.00
+Sedan	1	4400.00
+Microcar	1	4000.00
+Pickup Single Cab	1	4000.00
+Eco Car	1	2700.00
+SUV	1	2200.00
+Hatchback	1	1100.00
+
+===== 4.5.4
+RentalID	BookingID	customer_name	due_return	actual_return	TotalAmount
+4	4	ภานุวัฒน์ สุวรรณ	2026-08-16 09:00:00	2026-08-16 14:20:00	11200.00
+11	11	รัตนา เกษมสันต์	2026-09-05 09:00:00	2026-09-05 14:20:00	9000.00
+
+===== 4.5.5
+RentalID	customer_name	Brand	Model	LicensePlate	ActualRentDate	due_return	days_rented
+19	สุภาวดี ทิพย์รัตน์	Mazda	CX-30	2ดต 1590 กรุงเทพมหานคร	2026-10-09 09:23:00	2026-10-13 09:00:00	3
+18	ธีรวัฒน์ ชัยมงคล	Ford	Ranger Wildtrak	1ฒท 1357 กรุงเทพมหานคร	2026-10-08 09:16:00	2026-10-13 09:00:00	4
+17	ศิริพร จันทร์เพ็ญ	Suzuki	Jimny	7บป 8080 กรุงเทพมหานคร	2026-10-07 09:49:00	2026-10-13 09:00:00	5
+20	สมชาย ใจดี	Toyota	Yaris Ativ	1กข 1234 กรุงเทพมหานคร	2026-10-10 09:30:00	2026-10-13 09:00:00	2
+
+===== 4.6.1
+BookingID	customer_name	car_type	car	ActualRentDate	ActualReturnDate	TotalAmount	PaymentMethod	paid_amount	payment_status
+1	พิมพ์ชนก วงศ์ทอง	MPV	Toyota Innova Zenix	2026-08-04 09:17:00	2026-08-10 08:49:00	12000.00	PromptPay	12000.00	Paid
+2	วีรยุทธ ทองคำ	Coupe	Ford Mustang	2026-08-07 09:24:00	2026-08-12 08:38:00	25000.00	Bank Transfer	25000.00	Paid
+3	กมลวรรณ ศักดิ์ดี	Sedan	Honda City	2026-08-10 09:31:00	2026-08-14 08:27:00	4400.00	Cash	4400.00	Paid
+4	ภานุวัฒน์ สุวรรณ	Van	Toyota Commuter	2026-08-13 09:38:00	2026-08-16 14:20:00	11200.00	Credit Card	11200.00	Paid
+5	อรอุมา ปัญญาดี	Convertible	MINI Cooper Convertible	2026-08-16 09:45:00	2026-08-18 08:55:00	8000.00	PromptPay	8000.00	Paid
+6	จิรายุ ประเสริฐ	Hatchback	Honda City Hatchback	2026-08-19 09:12:00	2026-08-20 08:44:00	1100.00	Bank Transfer	1100.00	Paid
+7	สมหญิง รักไทย	Luxury Sedan	Mercedes-Benz E300e	2026-08-22 09:19:00	2026-08-28 08:33:00	33000.00	Cash	33000.00	Paid
+8	กิตติพงษ์ แสงอรุณ	Minibus	Hyundai H-1	2026-08-25 09:26:00	2026-08-30 08:22:00	12500.00	Credit Card	12500.00	Paid
+9	ปิยะนุช มีสุข	Compact SUV	Toyota Yaris Cross	2026-08-28 09:33:00	2026-09-01 08:11:00	5600.00	PromptPay	5600.00	Paid
+10	ชยพล อินทร์แก้ว	Luxury SUV	BMW X5	2026-08-31 09:40:00	2026-09-03 08:50:00	19500.00	Bank Transfer	19500.00	Paid
+11	รัตนา เกษมสันต์	Wagon	Volvo V60	2026-09-03 09:47:00	2026-09-05 14:20:00	9000.00	Cash	9000.00	Paid
+12	ณัฐพล เจริญผล	SUV	Toyota Fortuner	2026-09-06 09:14:00	2026-09-07 08:28:00	2200.00	Credit Card	2200.00	Paid
+13	วรรณภา นาคสวัสดิ์	EV	BYD Atto 3	2026-09-09 09:21:00	2026-09-15 08:17:00	9600.00	PromptPay	9600.00	Paid
+14	ธนากร ศรีสุข	Microcar	Wuling Air EV	2026-09-12 09:28:00	2026-09-17 08:56:00	4000.00	Bank Transfer	4000.00	Paid
+15	ณัฐธิดา บุญมา	Pickup Single Cab	Isuzu D-Max Spark	2026-09-15 09:35:00	2026-09-19 08:45:00	4000.00	Cash	4000.00	Paid
+16	อนุชา พรหมมา	Hybrid	Honda Civic e:HEV	2026-09-18 09:42:00	2026-09-21 08:34:00	5100.00	Credit Card	5100.00	Pending
+
+===== 4.6.2
+CustomerID	Name	total_paid
+2	สมหญิง รักไทย	33000.00
+7	วีรยุทธ ทองคำ	25000.00
+11	ชยพล อินทร์แก้ว	19500.00
+5	กิตติพงษ์ แสงอรุณ	12500.00
+4	พิมพ์ชนก วงศ์ทอง	12000.00
+13	ภานุวัฒน์ สุวรรณ	11200.00
+20	วรรณภา นาคสวัสดิ์	9600.00
+
+===== 4.6.3
+pay_month	revenue	cumulative_revenue
+2026-08	107200.00	107200.00
+2026-09	53900.00	161100.00
+2026-10	11000.00	172100.00
+
+===== 4.6.4
+revenue_rank	car	revenue	revenue_pct
+1	Mercedes-Benz E300e	33000.00	16.69
+2	Ford Mustang	25000.00	12.65
+3	BMW X5	19500.00	9.86
+4	Suzuki Jimny	13800.00	6.98
+5	Hyundai H-1	12500.00	6.32
+6	Toyota Innova Zenix	12000.00	6.07
+7	Toyota Commuter	11200.00	5.67
+8	BYD Atto 3	9600.00	4.86
+9	Ford Ranger Wildtrak	9000.00	4.55
+9	Volvo V60	9000.00	4.55
+11	MINI Cooper Convertible	8000.00	4.05
+12	Mazda CX-30	6000.00	3.03
+13	Toyota Yaris Cross	5600.00	2.83
+14	Honda Civic e:HEV	5100.00	2.58
+15	Honda City	4400.00	2.23
+16	Isuzu D-Max Spark	4000.00	2.02
+16	Wuling Air EV	4000.00	2.02
+18	Toyota Yaris Ativ	2700.00	1.37
+19	Toyota Fortuner	2200.00	1.11
+20	Honda City Hatchback	1100.00	0.56
+
+===== 4.6.5
+(0 rows)
+===== 4.6.6
+issue	ref_id	detail
+Amount mismatch	4	Total 11200.00 vs expected 8400.00
+Amount mismatch	11	Total 9000.00 vs expected 6000.00
+Unpaid rental	16	Paid 0.00 of 5100.00
+
+===== ภาคผนวก ก–ง (each statement run separately)
+ก ERROR 1452 (23000): Cannot add or update a child row: a foreign key constraint fails (`BOOKING`, CONSTRAINT `BOOKING_ibfk_1` FOREIGN KEY (`CustomerID`) REFERENCES `CUSTOMER` (`CustomerID`))
+ข ERROR 1062 (23000): Duplicate entry '1กข 1234 กรุงเทพมหานคร' for key 'LicensePlate'
+ค ERROR 1062 (23000): Duplicate entry '1' for key 'PRIMARY'
+ง ERROR 1062 (23000): Duplicate entry '1' for key 'BookingID'
